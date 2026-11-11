@@ -1,0 +1,57 @@
+controllers:
+  chrysopoeia:
+    # renovate: datasource=github-tags depName=helmetica-framework/chrysopoeia
+    version: v0.1.4
+  custos:
+    # renovate: datasource=github-tags depName=helmetica-framework/custos
+    version: v0.1.1
+  ampulla:
+    # renovate: datasource=github-tags depName=helmetica-framework/ampulla
+    version: v0.1.1
+  adept:
+    # renovate: datasource=github-tags depName=helmetica-framework/adept
+    version: v0.1.0-dev7
+  sigillum:
+    # renovate: datasource=github-tags depName=helmetica-framework/sigillum
+    version: v0.2.0
+  libra:
+    # renovate: datasource=github-tags depName=helmetica-framework/libra
+    version: v0.0.1
+
+images:
+  flux-source-controller:
+    registry: ghcr.io
+    repository: fluxcd/source-controller
+    # renovate: datasource=docker depName=ghcr.io/fluxcd/source-controller
+    tag: v1.10.1
+  flux-image-reflector-controller:
+    registry: ghcr.io
+    repository: fluxcd/image-reflector-controller
+    # renovate: datasource=docker depName=ghcr.io/fluxcd/image-reflector-controller
+    tag: v1.3.0
+  flux-helm-controller:
+    registry: ghcr.io
+    repository: fluxcd/helm-controller
+    # renovate: datasource=docker depName=ghcr.io/fluxcd/helm-controller
+    tag: v1.7.1
+  alertmanager:
+    registry: quay.io
+    repository: prometheus/alertmanager
+    # renovate: datasource=docker depName=quay.io/prometheus/alertmanager
+    tag: v0.35.0
+  prometheus:
+    registry: quay.io
+    repository: prometheus/prometheus
+    # renovate: datasource=docker depName=quay.io/prometheus/prometheus
+    tag: v3.16.0
+  prometheus-operator:
+    registry: quay.io
+    repository: prometheus-operator/prometheus-operator
+    # renovate: datasource=docker depName=quay.io/prometheus-operator/prometheus-operator
+    tag: v0.95.1
+  # Ships with the operator release and must match its tag.
+  prometheus-config-reloader:
+    registry: quay.io
+    repository: prometheus-operator/prometheus-config-reloader
+    # renovate: datasource=docker depName=quay.io/prometheus-operator/prometheus-config-reloader
+    tag: v0.95.1

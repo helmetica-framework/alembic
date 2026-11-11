@@ -1,0 +1,50 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigests"
+  ],
+  "postUpgradeTasks": {
+    "commands": [
+      "just vendor render gen-golden"
+    ],
+    "fileFilters": [
+      "upstream/**",
+      "manifests/**",
+      "tests/golden/**"
+    ],
+    "executionMode": "update"
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Controller versions and image tags in versions.yaml",
+      "managerFilePatterns": [
+        "/(^|/)versions\\.yaml$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-.]+?) depName=(?<depName>[^\\s]+?)(?: registryUrl=(?<registryUrl>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?\\n\\s*[a-z]+: (?<currentValue>[^\\s]+)"
+      ]
+    },
+    {
+      "customType": "regex",
+      "description": "Tool versions in the Justfile",
+      "managerFilePatterns": [
+        "/(^|/)Justfile$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-.]+?) depName=(?<depName>[^\\s]+?)(?: versioning=(?<versioning>[^\\s]+?))?\\n[a-z0-9_]+ := \"(?<currentValue>[^\"]+)\""
+      ]
+    },
+    {
+      "customType": "regex",
+      "description": "just version in CI",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/.+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-z-.]+?) depName=(?<depName>[^\\s]+?)\\n\\s*just-version: '(?<currentValue>[^']+)'"
+      ]
+    }
+  ]
+}
