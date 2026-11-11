@@ -9,7 +9,7 @@
       "just vendor render gen-golden"
     ],
     "fileFilters": [
-      "upstream/**",
+      "vendor/**",
       "manifests/**",
       "tests/golden/**"
     ],

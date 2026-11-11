@@ -11,8 +11,8 @@ kustomize := "go run sigs.k8s.io/kustomize/kustomize/v5@" + kustomize_version
 # Test instances, one per platform. Add a new tests/<name>.jsonnet here.
 instances := "kind talos openshift4"
 
-# Output directories. Override before the recipe: `just upstream_dir=.work/x vendor`.
-upstream_dir  := "upstream"
+# Output directories. Override before the recipe: `just vendor_dir=.work/x vendor`.
+vendor_dir    := "vendor"
 manifests_dir := "manifests"
 golden_dir    := "tests/golden"
 
@@ -20,19 +20,12 @@ golden_dir    := "tests/golden"
 default:
     @just --list
 
-# Vendor every upstream kustomize dir at its pinned tag into upstream/.
+# Vendor every upstream kustomize dir at its pinned tag into vendor/.
 vendor:
     #!/usr/bin/env bash
     set -euo pipefail
-    mkdir -p "{{upstream_dir}}"
-    echo "vendor: TODO, renders upstream/ in Unit 2" >&2
-
-# Write manifests/kind/framework/ and manifests/kind/monitoring/.
-render: vendor
-    #!/usr/bin/env bash
-    set -euo pipefail
-    mkdir -p "{{manifests_dir}}"
-    echo "render: TODO, renders manifests/ in Unit 6" >&2
+    {{jsonnet}} -S hack/vendor.jsonnet \
+        | KUSTOMIZE="{{kustomize}}" hack/vendor.sh "{{vendor_dir}}"
 
 # Write the golden files of all test instances.
 gen-golden: vendor
@@ -52,13 +45,11 @@ golden-diff: vendor
     #!/usr/bin/env bash
     set -euo pipefail
     rm -rf .work/golden-diff
-    just upstream_dir=.work/golden-diff/upstream vendor
-    just manifests_dir=.work/golden-diff/manifests render
+    just vendor_dir=.work/golden-diff/vendor vendor
     just golden_dir=.work/golden-diff/golden gen-golden
     # Empty output dirs are not committed, so create them before diffing.
-    mkdir -p "{{upstream_dir}}" "{{manifests_dir}}" "{{golden_dir}}"
-    diff -ru "{{upstream_dir}}" .work/golden-diff/upstream
-    diff -ru "{{manifests_dir}}" .work/golden-diff/manifests
+    mkdir -p "{{vendor_dir}}" "{{manifests_dir}}" "{{golden_dir}}"
+    diff -ru "{{vendor_dir}}" .work/golden-diff/vendor
     diff -ru "{{golden_dir}}" .work/golden-diff/golden
 
 # Fail if a jsonnet file is not formatted.

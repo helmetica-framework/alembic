@@ -1,22 +1,48 @@
+# What to vendor, and at which version.
+#
+# `dirs` are kustomize dirs, rendered with `kustomize build`. `files` are single
+# YAML files, fetched raw. Both are relative to the upstream repo root.
 controllers:
   chrysopoeia:
     # renovate: datasource=github-tags depName=helmetica-framework/chrysopoeia
     version: v0.1.4
+    dirs:
+      crd: config/crd
+      default: config/default
+      proxy: config/proxy
+      flux: config/flux
+    files:
+      espejote: config/proxy/permission-label-map-espejote.yaml
   custos:
     # renovate: datasource=github-tags depName=helmetica-framework/custos
     version: v0.1.1
+    dirs:
+      crd: config/crd
+      default: config/default
   ampulla:
     # renovate: datasource=github-tags depName=helmetica-framework/ampulla
     version: v0.1.1
+    dirs:
+      crd: config/crd
+      default: config/default
   adept:
     # renovate: datasource=github-tags depName=helmetica-framework/adept
     version: v0.1.0-dev7
+    dirs:
+      crd: config/crd
+      default: config/default
   sigillum:
     # renovate: datasource=github-tags depName=helmetica-framework/sigillum
     version: v0.2.0
+    dirs:
+      crd: config/crd
+      default: config/default
   libra:
     # renovate: datasource=github-tags depName=helmetica-framework/libra
     version: v0.0.1
+    dirs:
+      crd: config/crd
+      default: config/default
 
 images:
   flux-source-controller:

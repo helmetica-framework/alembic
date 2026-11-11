@@ -6,9 +6,9 @@ manifests. Everything is generated from the controller releases pinned in
 
 ## Layout
 
-- `versions.yaml`: controller versions and image tags.
+- `versions.yaml`: controller versions, image tags, and which upstream dirs and files to vendor.
 - `Justfile`: `vendor`, `render`, `gen-golden`, `golden-diff`, `lint`, `fmt`.
-- `upstream/`: upstream kustomize dirs at the pinned tags. Generated.
+- `vendor/`: upstream kustomize dirs at the pinned tags. Generated.
 - `lib/`: jsonnet library. `alembic.framework(settings)` and `alembic.monitoring(settings)`.
 - `manifests/`: the default render, usable as a remote kustomize base. Generated.
 - `tests/`: golden tests, one instance per platform.
