@@ -3,6 +3,7 @@ local chrysopoeia = import 'chrysopoeia.libsonnet';
 local common = import 'common.libsonnet';
 local controllers = import 'controllers.libsonnet';
 local defaults = import 'defaults.libsonnet';
+local monitoringMain = import 'monitoring/main.libsonnet';
 
 {
   defaults:: defaults,
@@ -25,5 +26,14 @@ local defaults = import 'defaults.libsonnet';
     + controllers.parts(s),
 
   monitoring(settings)::
-    {},
+    local s = std.mergePatch(defaults, settings);
+    local ms = s.monitoring_stack;
+
+    if !ms.enabled then {}
+    else
+      local namespace =
+        if ms.namespace == null then s.namespace + '-monitoring'
+        else ms.namespace;
+
+      monitoringMain(s { monitoring_stack+: { namespace: namespace } }),
 }

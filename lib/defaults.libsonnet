@@ -13,6 +13,10 @@
     'flux-source-controller': { registry: 'ghcr.io', repository: 'fluxcd/source-controller' },
     'flux-image-reflector-controller': { registry: 'ghcr.io', repository: 'fluxcd/image-reflector-controller' },
     'flux-helm-controller': { registry: 'ghcr.io', repository: 'fluxcd/helm-controller' },
+    alertmanager: { registry: 'quay.io', repository: 'prometheus/alertmanager' },
+    prometheus: { registry: 'quay.io', repository: 'prometheus/prometheus' },
+    'prometheus-operator': { registry: 'quay.io', repository: 'prometheus-operator/prometheus-operator' },
+    'prometheus-config-reloader': { registry: 'quay.io', repository: 'prometheus-operator/prometheus-config-reloader' },
   },
   chrysopoeia: { enabled: true, crds: { enabled: true }, admission: 'builtin' },
   proxy: { enabled: true },
@@ -22,5 +26,30 @@
   adept: { enabled: true, crds: { enabled: true } },
   sigillum: { enabled: true, crds: { enabled: true } },
   libra: { enabled: true, crds: { enabled: true }, bucketSecretName: 'libra-billing' },
-  monitoring_stack: {},  // Unit 5
+  monitoring_stack: {
+    enabled: false,
+    namespace: null,
+    namespaceMetadata: {
+      labels: {
+        'helmetica.io/monitoring': 'system',
+      },
+    },
+    platform: '',
+    alertmanager: {
+      replicas: 1,
+      resources: {
+        limits: { cpu: '100m', memory: '100Mi' },
+        requests: { cpu: '4m', memory: '100Mi' },
+      },
+      retention: '120h',
+      global_config: {},
+    },
+    prometheus: {
+      retention: '8d',
+      resources: {
+        limits: { memory: '2Gi' },
+        requests: { cpu: '100m', memory: '2Gi' },
+      },
+    },
+  },
 }

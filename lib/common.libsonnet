@@ -8,7 +8,14 @@ local s3EnvEntry(name, key, secret) = {
   valueFrom: { secretKeyRef: { name: secret, key: key } },
 };
 
+local imageTag(s, name) =
+  if std.objectHas(s.images, name) && std.objectHas(s.images[name], 'tag') then s.images[name].tag
+  else if std.objectHas(versions.controllers, name) then versions.controllers[name].version
+  else versions.images[name].tag;
+
 {
+  imageTag:: imageTag,
+
   imageFor(s, name)::
     local v = std.get(versions.controllers, name, {});
     local fallback =
@@ -16,10 +23,7 @@ local s3EnvEntry(name, key, secret) = {
       else if std.objectHas(versions.images, name) then versions.images[name]
       else { registry: 'ghcr.io', repository: 'helmetica-framework/' + name };
     local i = fallback + std.get(s.images, name, {});
-    local tag =
-      if std.objectHas(versions.controllers, name) then v.version
-      else versions.images[name].tag;
-    '%(registry)s/%(repository)s:%(tag)s' % (i { tag: tag }),
+    '%(registry)s/%(repository)s:%(tag)s' % (i { tag: imageTag(s, name) }),
 
   addArgs(c, args)::
     c { args: std.get(c, 'args', []) + args },
