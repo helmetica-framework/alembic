@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Vendors the upstream kustomize dirs and raw files listed in versions.yaml.
+# Vendors the upstream kustomize dirs and raw files listed in controllers.yaml.
 # Reads rows from hack/vendor.jsonnet on stdin:
 #   <controller> <name> <kind> <path> <version>
 # Writes <out-dir>/<controller>/<name>.yaml and <out-dir>/index.libsonnet.

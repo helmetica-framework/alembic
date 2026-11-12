@@ -1,5 +1,6 @@
 // Upstream objects at their pinned tags, from the generated index.
 local index = import '../vendor/index.libsonnet';
+local versions = std.parseYaml(importstr '../controllers.yaml');
 
 local asList(x) =
   if std.isArray(x) then x else [ x ];
@@ -26,6 +27,18 @@ local parse(s) =
     }
     for controller in std.objectFields(index)
   },
+
+  // The namespace a generic controller's upstream dir renders into.
+  namespaceOf(controller)::
+    local v = versions.controllers[controller];
+    local found = [
+      o.metadata.name
+      for o in parse(index[controller].default)
+      if o.kind == 'Namespace'
+    ];
+    if std.objectHas(v, 'namespace') then v.namespace
+    else if std.length(found) == 1 then found[0]
+    else controller + '-system',
 
   asList:: asList,
   parse:: parse,

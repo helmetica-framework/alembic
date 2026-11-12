@@ -1,6 +1,6 @@
 // Rows for hack/vendor.sh, one per line:
 //   <controller> <name> <kind> <path> <version>
-local versions = std.parseYaml(importstr '../versions.yaml');
+local versions = std.parseYaml(importstr '../controllers.yaml');
 local controllers = versions.controllers;
 
 local paths(controller, field) =

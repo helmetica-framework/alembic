@@ -1,11 +1,16 @@
-# What to vendor, and at which version.
+# Controller versions and upstream dirs, plus image tags.
 #
 # `dirs` are kustomize dirs, rendered with `kustomize build`. `files` are single
 # YAML files, fetched raw. Both are relative to the upstream repo root.
+#
+# `order` is the file prefix (20_custos_crds, 21_custos). A controller without
+# `order` is rendered by its own module, not the generic one.
+# `namespace` and `repository` are optional overrides.
 controllers:
   chrysopoeia:
     # renovate: datasource=github-tags depName=helmetica-framework/chrysopoeia
     version: v0.1.4
+    # No order: rendered by the chrysopoeia module.
     dirs:
       crd: config/crd
       default: config/default
@@ -15,31 +20,46 @@ controllers:
       espejote: config/proxy/permission-label-map-espejote.yaml
   custos:
     # renovate: datasource=github-tags depName=helmetica-framework/custos
-    version: v0.1.1
+    version: v0.1.2
+    order: 20
+    namespace: custos-system
+    repository: helmetica-framework/custos
     dirs:
       crd: config/crd
       default: config/default
   ampulla:
     # renovate: datasource=github-tags depName=helmetica-framework/ampulla
     version: v0.1.1
+    order: 30
+    namespace: ampulla-system
+    repository: helmetica-framework/ampulla
     dirs:
       crd: config/crd
       default: config/default
   adept:
     # renovate: datasource=github-tags depName=helmetica-framework/adept
     version: v0.1.0-dev7
+    order: 40
+    namespace: adept-system
+    repository: helmetica-framework/adept
     dirs:
       crd: config/crd
       default: config/default
   sigillum:
     # renovate: datasource=github-tags depName=helmetica-framework/sigillum
     version: v0.2.0
+    order: 50
+    namespace: sigillum-system
+    repository: helmetica-framework/sigillum
     dirs:
       crd: config/crd
       default: config/default
   libra:
     # renovate: datasource=github-tags depName=helmetica-framework/libra
     version: v0.0.1
+    order: 60
+    namespace: libra-system
+    repository: helmetica-framework/libra
     dirs:
       crd: config/crd
       default: config/default
@@ -74,10 +94,10 @@ images:
     registry: quay.io
     repository: prometheus-operator/prometheus-operator
     # renovate: datasource=docker depName=quay.io/prometheus-operator/prometheus-operator
-    tag: v0.95.1
+    tag: v0.95.2
   # Ships with the operator release and must match its tag.
   prometheus-config-reloader:
     registry: quay.io
     repository: prometheus-operator/prometheus-config-reloader
     # renovate: datasource=docker depName=quay.io/prometheus-operator/prometheus-config-reloader
-    tag: v0.95.1
+    tag: v0.95.2
