@@ -2,11 +2,11 @@
 
 Renders the helmetica framework and its monitoring stack into plain Kubernetes
 manifests. Everything is generated from the controller releases pinned in
-`controllers.yaml`, so a version bump is one file plus a re-render.
+`defaults.yaml`, so a version bump is one file plus a re-render.
 
 ## Layout
 
-- `controllers.yaml`: controller versions, upstream dirs, file prefixes and image tags.
+- `defaults.yaml`: controller versions, upstream dirs, image tags and the library defaults.
 - `Justfile`: `vendor`, `render`, `gen-golden`, `golden-diff`, `lint`, `fmt`.
 - `vendor/`: upstream kustomize dirs at the pinned tags. Generated.
 - `lib/`: jsonnet library. `alembic.framework(settings)` and `alembic.monitoring(settings)`.
@@ -35,7 +35,7 @@ Add the repo as a jsonnet dependency and import `alembic/lib/alembic.libsonnet`.
 
 ## Bump a version
 
-Edit `controllers.yaml` (or merge the Renovate PR), then re-render:
+Edit `defaults.yaml` (or merge the Renovate PR), then re-render:
 
 ```bash
 just vendor render gen-golden

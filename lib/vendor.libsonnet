@@ -1,6 +1,6 @@
 // Upstream objects at their pinned tags, from the generated index.
 local index = import '../vendor/index.libsonnet';
-local versions = std.parseYaml(importstr '../controllers.yaml');
+local versions = std.parseYaml(importstr '../defaults.yaml');
 
 local asList(x) =
   if std.isArray(x) then x else [ x ];

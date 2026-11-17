@@ -1,0 +1,189 @@
+# Controller versions, upstream dirs, image tags and renderer defaults.
+#
+# `dirs` are kustomize dirs, rendered with `kustomize build`. `files` are single
+# YAML files, fetched raw. `rawdirs` are all YAML files in a dir, fetched raw.
+# All paths are relative to the upstream repo root. `repo` overrides the default
+# `helmetica-framework/<name>`. A controller without `version` uses its image tag.
+#
+# `order` is the file prefix (20_custos_crds, 21_custos). A controller without
+# `order` is rendered by its own module, not the generic one.
+# `namespace` is an optional override. Image registry and repository live in
+# `images`.
+
+namespace: helmetica-framework
+namespaceMetadata: {}
+createNamespace: true
+
+images:
+  chrysopoeia:
+    registry: ghcr.io
+    repository: helmetica-framework/chrysopoeia
+  custos:
+    registry: ghcr.io
+    repository: helmetica-framework/custos
+  ampulla:
+    registry: ghcr.io
+    repository: helmetica-framework/ampulla
+  adept:
+    registry: ghcr.io
+    repository: helmetica-framework/adept
+  sigillum:
+    registry: ghcr.io
+    repository: helmetica-framework/sigillum
+  libra:
+    registry: ghcr.io
+    repository: helmetica-framework/libra
+  flux-source-controller:
+    registry: ghcr.io
+    repository: fluxcd/source-controller
+    # renovate: datasource=docker depName=ghcr.io/fluxcd/source-controller
+    tag: v1.10.1
+  flux-image-reflector-controller:
+    registry: ghcr.io
+    repository: fluxcd/image-reflector-controller
+    # renovate: datasource=docker depName=ghcr.io/fluxcd/image-reflector-controller
+    tag: v1.3.0
+  flux-helm-controller:
+    registry: ghcr.io
+    repository: fluxcd/helm-controller
+    # renovate: datasource=docker depName=ghcr.io/fluxcd/helm-controller
+    tag: v1.7.1
+  alertmanager:
+    registry: quay.io
+    repository: prometheus/alertmanager
+    # renovate: datasource=docker depName=quay.io/prometheus/alertmanager
+    tag: v0.35.0
+  prometheus:
+    registry: quay.io
+    repository: prometheus/prometheus
+    # renovate: datasource=docker depName=quay.io/prometheus/prometheus
+    tag: v3.16.0
+  prometheus-operator:
+    registry: quay.io
+    repository: prometheus-operator/prometheus-operator
+    # renovate: datasource=docker depName=quay.io/prometheus-operator/prometheus-operator
+    tag: v0.95.2
+  # Ships with the operator release and must match its tag.
+  prometheus-config-reloader:
+    registry: quay.io
+    repository: prometheus-operator/prometheus-config-reloader
+    # renovate: datasource=docker depName=quay.io/prometheus-operator/prometheus-config-reloader
+    tag: v0.95.2
+
+controllers:
+  chrysopoeia:
+    # renovate: datasource=github-tags depName=helmetica-framework/chrysopoeia
+    version: v0.1.7
+    # No order: rendered by the chrysopoeia module.
+    dirs:
+      crd: config/crd
+      default: config/default
+      proxy: config/proxy
+      flux: config/flux
+    files:
+      espejote: config/proxy/permission-label-map-espejote.yaml
+  custos:
+    # renovate: datasource=github-tags depName=helmetica-framework/custos
+    version: v0.1.2
+    order: 20
+    namespace: custos-system
+    dirs:
+      crd: config/crd
+      default: config/default
+  ampulla:
+    # renovate: datasource=github-tags depName=helmetica-framework/ampulla
+    version: v0.1.2
+    order: 30
+    namespace: ampulla-system
+    dirs:
+      crd: config/crd
+      default: config/default
+  adept:
+    # renovate: datasource=github-tags depName=helmetica-framework/adept
+    version: v0.1.0-dev7
+    order: 40
+    namespace: adept-system
+    dirs:
+      crd: config/crd
+      default: config/default
+  sigillum:
+    # renovate: datasource=github-tags depName=helmetica-framework/sigillum
+    version: v0.2.0
+    order: 50
+    namespace: sigillum-system
+    dirs:
+      crd: config/crd
+      default: config/default
+  libra:
+    # renovate: datasource=github-tags depName=helmetica-framework/libra
+    version: v0.0.1
+    order: 60
+    namespace: libra-system
+    dirs:
+      crd: config/crd
+      default: config/default
+  prometheus-operator:
+    # No order: the CRDs come from the operator repo, rendered by the monitoring
+    # module. The version is the prometheus-operator image tag.
+    repo: prometheus-operator/prometheus-operator
+    rawdirs:
+      crds: example/prometheus-operator-crd
+
+chrysopoeia:
+  enabled: true
+  crds:
+    enabled: true
+  admission: builtin
+proxy:
+  enabled: true
+flux:
+  enabled: true
+custos:
+  enabled: true
+  crds:
+    enabled: true
+ampulla:
+  enabled: true
+  crds:
+    enabled: true
+adept:
+  enabled: true
+  crds:
+    enabled: true
+sigillum:
+  enabled: true
+  crds:
+    enabled: true
+libra:
+  enabled: true
+  crds:
+    enabled: true
+  bucketSecretName: libra-billing
+monitoring_stack:
+  enabled: false
+  crds:
+    enabled: false
+  namespace: null
+  namespaceMetadata:
+    labels:
+      helmetica.io/monitoring: system
+  platform: ''
+  alertmanager:
+    replicas: 1
+    resources:
+      limits:
+        cpu: 100m
+        memory: 100Mi
+      requests:
+        cpu: 4m
+        memory: 100Mi
+    retention: 120h
+    global_config: {}
+  prometheus:
+    retention: 8d
+    resources:
+      limits:
+        memory: 2Gi
+      requests:
+        cpu: 100m
+        memory: 2Gi

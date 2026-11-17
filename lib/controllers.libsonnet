@@ -1,7 +1,7 @@
 local common = import 'common.libsonnet';
 local ns = import 'namespace.libsonnet';
 local vendor = import 'vendor.libsonnet';
-local versions = std.parseYaml(importstr '../controllers.yaml');
+local versions = std.parseYaml(importstr '../defaults.yaml');
 
 local names = [
   name

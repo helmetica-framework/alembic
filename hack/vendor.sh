@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Vendors the upstream kustomize dirs and raw files listed in controllers.yaml.
-# Reads rows from hack/vendor.jsonnet on stdin:
-#   <controller> <name> <kind> <path> <version>
+# Vendors the upstream kustomize dirs, raw files and GitHub dirs listed in
+# defaults.yaml. Reads rows from hack/vendor.jsonnet on stdin:
+#   <controller> <name> <kind> <path> <version> <repo>
 # Writes <out-dir>/<controller>/<name>.yaml and <out-dir>/index.libsonnet.
 set -euo pipefail
 
@@ -11,17 +11,39 @@ vendor_dir=${1:?usage: vendor.sh <out-dir> < rows}
 rm -rf "$vendor_dir"
 mkdir -p "$vendor_dir"
 
-while read -r controller name kind path version; do
+# Quote object keys that are not valid jsonnet identifiers.
+jsonnet_key() {
+  case "$1" in
+    *[!A-Za-z0-9_]*) printf "'%s'" "$1" ;;
+    *) printf '%s' "$1" ;;
+  esac
+}
+
+while read -r controller name kind path version repo; do
   [ -n "$controller" ] || continue
+  : "${repo:=helmetica-framework/$controller}"
   mkdir -p "$vendor_dir/$controller"
   out="$vendor_dir/$controller/$name.yaml"
   case "$kind" in
     kustomize)
       # shellcheck disable=SC2086
-      $KUSTOMIZE build "github.com/helmetica-framework/$controller//$path?ref=$version" > "$out"
+      $KUSTOMIZE build "github.com/$repo//$path?ref=$version" > "$out"
       ;;
     raw)
-      curl -fsSL "https://raw.githubusercontent.com/helmetica-framework/$controller/$version/$path" > "$out"
+      curl -fsSL "https://raw.githubusercontent.com/$repo/$version/$path" > "$out"
+      ;;
+    github-dir)
+      # The archive puts the repo at one level above its contents, so strip one
+      # more level than the path has.
+      strip=$(( 1 + $(awk -F/ '{ print NF }' <<< "$path") ))
+      tmp=$(mktemp -d)
+      curl -fsSL "https://github.com/$repo/archive/refs/tags/$version.tar.gz" \
+        | tar -xz -C "$tmp" --strip-components="$strip" --wildcards "*/$path/*.yaml"
+      for file in "$tmp"/*.yaml; do
+        [ -e "$file" ] || continue
+        cat "$file"
+      done > "$out"
+      rm -rf "$tmp"
       ;;
     *)
       echo "unknown kind '$kind' for $controller/$name" >&2
@@ -36,10 +58,10 @@ done
   for dir in "$vendor_dir"/*/; do
     [ -d "$dir" ] || continue
     controller=$(basename "$dir")
-    echo "  $controller: {"
+    echo "  $(jsonnet_key "$controller"): {"
     for file in "$dir"*.yaml; do
       name=$(basename "$file")
-      echo "    ${name%.yaml}: importstr '$controller/$name',"
+      echo "    $(jsonnet_key "${name%.yaml}"): importstr '$controller/$name',"
     done
     echo '  },'
   done

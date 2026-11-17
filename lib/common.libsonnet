@@ -1,5 +1,5 @@
 // Helpers shared by the framework parts.
-local versions = std.parseYaml(importstr '../controllers.yaml');
+local versions = std.parseYaml(importstr '../defaults.yaml');
 local ns = import 'namespace.libsonnet';
 local vendor = import 'vendor.libsonnet';
 
@@ -17,10 +17,8 @@ local imageTag(s, name) =
   imageTag:: imageTag,
 
   imageFor(s, name)::
-    local v = std.get(versions.controllers, name, {});
     local fallback =
-      if std.objectHas(v, 'repository') then { registry: 'ghcr.io', repository: v.repository }
-      else if std.objectHas(versions.images, name) then versions.images[name]
+      if std.objectHas(versions.images, name) then versions.images[name]
       else { registry: 'ghcr.io', repository: 'helmetica-framework/' + name };
     local i = fallback + std.get(s.images, name, {});
     '%(registry)s/%(repository)s:%(tag)s' % (i { tag: imageTag(s, name) }),

@@ -23,6 +23,9 @@
     crd: importstr 'libra/crd.yaml',
     default: importstr 'libra/default.yaml',
   },
+  'prometheus-operator': {
+    crds: importstr 'prometheus-operator/crds.yaml',
+  },
   sigillum: {
     crd: importstr 'sigillum/crd.yaml',
     default: importstr 'sigillum/default.yaml',

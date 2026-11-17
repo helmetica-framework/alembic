@@ -2,7 +2,7 @@
 local chrysopoeia = import 'chrysopoeia.libsonnet';
 local common = import 'common.libsonnet';
 local controllers = import 'controllers.libsonnet';
-local defaults = import 'defaults.libsonnet';
+local defaults = std.parseYaml(importstr '../defaults.yaml');
 local monitoringMain = import 'monitoring/main.libsonnet';
 
 {
