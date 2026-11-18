@@ -1,5 +1,7 @@
 # Alembic
 
+**Alembic**: the still an alchemist distills in, where a mixture is heated down to its essence.
+
 Renders the helmetica framework and its monitoring stack into plain Kubernetes
 manifests. Everything is generated from the controller releases pinned in
 `defaults.yaml`, so a version bump is one file plus a re-render.
