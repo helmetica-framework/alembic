@@ -32,6 +32,3 @@ Edit `defaults.yaml` (or merge the Renovate PR), then re-render:
 just gen-golden
 ```
 
-Review the diff before committing. `just golden-diff` fails when the generated
-trees are stale, and CI runs it on every PR.
-

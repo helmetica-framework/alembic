@@ -4,17 +4,6 @@
     "config:recommended",
     "helpers:pinGitHubActionDigests"
   ],
-  "postUpgradeTasks": {
-    "commands": [
-      "just vendor render gen-golden"
-    ],
-    "fileFilters": [
-      "vendor/**",
-      "manifests/**",
-      "tests/golden/**"
-    ],
-    "executionMode": "update"
-  },
   "customManagers": [
     {
       "customType": "regex",
