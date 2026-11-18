@@ -2,6 +2,7 @@
 local chrysopoeia = import 'chrysopoeia.libsonnet';
 local common = import 'common.libsonnet';
 local controllers = import 'controllers.libsonnet';
+local cosi = import 'cosi.libsonnet';
 local defaults = std.parseYaml(importstr '../defaults.yaml');
 local monitoringMain = import 'monitoring/main.libsonnet';
 
@@ -23,7 +24,8 @@ local monitoringMain = import 'monitoring/main.libsonnet';
 
     common.part('00_namespace', namespace)
     + chrysopoeia.parts(s)
-    + controllers.parts(s),
+    + controllers.parts(s)
+    + cosi.parts(s),
 
   monitoring(settings)::
     local s = std.mergePatch(defaults, settings);

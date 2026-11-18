@@ -4,7 +4,7 @@ kind: "Namespace"
 metadata:
   labels:
     helmetica.io/monitoring: "system"
-    name: "helmetica-framework-monitoring"
-  name: "helmetica-framework-monitoring"
+    name: "syn-helmetica-framework-monitoring"
+  name: "syn-helmetica-framework-monitoring"
 ...
 

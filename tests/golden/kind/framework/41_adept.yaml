@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/name: "serviceaccount"
     app.kubernetes.io/part-of: "adept"
   name: "adept-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "Role"
@@ -23,7 +23,7 @@ metadata:
     app.kubernetes.io/name: "role"
     app.kubernetes.io/part-of: "adept"
   name: "adept-leader-election-role"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 rules:
 - apiGroups:
   - ""
@@ -218,7 +218,7 @@ metadata:
     app.kubernetes.io/name: "rolebinding"
     app.kubernetes.io/part-of: "adept"
   name: "adept-leader-election-rolebinding"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 roleRef:
   apiGroup: "rbac.authorization.k8s.io"
   kind: "Role"
@@ -226,7 +226,7 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "adept-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "ClusterRoleBinding"
@@ -246,7 +246,7 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "adept-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "ClusterRoleBinding"
@@ -266,7 +266,7 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "adept-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "ClusterRoleBinding"
@@ -286,7 +286,7 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "adept-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "ClusterRoleBinding"
@@ -299,7 +299,7 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "adept-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "v1"
 kind: "Service"
@@ -309,7 +309,7 @@ metadata:
     app.kubernetes.io/name: "adept"
     control-plane: "controller-manager"
   name: "adept-controller-manager-metrics-service"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   ports:
   - name: "https"
@@ -328,7 +328,7 @@ metadata:
     app.kubernetes.io/name: "adept"
     control-plane: "controller-manager"
   name: "adept-webhook-service"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   ports:
   - port: 443
@@ -350,7 +350,7 @@ metadata:
     app.kubernetes.io/part-of: "adept"
     control-plane: "controller-manager"
   name: "adept-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   replicas: 1
   selector:
@@ -427,11 +427,11 @@ metadata:
     app.kubernetes.io/managed-by: "kustomize"
     app.kubernetes.io/name: "adept"
   name: "adept-serving-cert"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   dnsNames:
-  - "adept-webhook-service.helmetica-framework.svc"
-  - "adept-webhook-service.helmetica-framework.svc.cluster.local"
+  - "adept-webhook-service.syn-helmetica-framework.svc"
+  - "adept-webhook-service.syn-helmetica-framework.svc.cluster.local"
   issuerRef:
     kind: "Issuer"
     name: "adept-selfsigned-issuer"
@@ -444,7 +444,7 @@ metadata:
     app.kubernetes.io/managed-by: "kustomize"
     app.kubernetes.io/name: "adept"
   name: "adept-selfsigned-issuer"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   selfSigned: {}
 ---
@@ -452,7 +452,7 @@ apiVersion: "admissionregistration.k8s.io/v1"
 kind: "ValidatingWebhookConfiguration"
 metadata:
   annotations:
-    cert-manager.io/inject-ca-from: "helmetica-framework/adept-serving-cert"
+    cert-manager.io/inject-ca-from: "syn-helmetica-framework/adept-serving-cert"
   name: "adept-validating-webhook-configuration"
 webhooks:
 - admissionReviewVersions:
@@ -460,7 +460,7 @@ webhooks:
   clientConfig:
     service:
       name: "adept-webhook-service"
-      namespace: "helmetica-framework"
+      namespace: "syn-helmetica-framework"
       path: "/validate-adept-helmetica-io-v1-maintenancewindow"
   failurePolicy: "Fail"
   name: "vmaintenancewindow.adept.helmetica.io"

@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/name: "serviceaccount"
     app.kubernetes.io/part-of: "chrysopoeia"
   name: "chrysopoeia-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "Role"
@@ -23,7 +23,7 @@ metadata:
     app.kubernetes.io/name: "role"
     app.kubernetes.io/part-of: "chrysopoeia"
   name: "chrysopoeia-leader-election-role"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 rules:
 - apiGroups:
   - ""
@@ -323,7 +323,7 @@ metadata:
     app.kubernetes.io/name: "rolebinding"
     app.kubernetes.io/part-of: "chrysopoeia"
   name: "chrysopoeia-leader-election-rolebinding"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 roleRef:
   apiGroup: "rbac.authorization.k8s.io"
   kind: "Role"
@@ -331,7 +331,7 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "chrysopoeia-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "ClusterRoleBinding"
@@ -344,7 +344,7 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "chrysopoeia-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "ClusterRoleBinding"
@@ -364,7 +364,7 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "chrysopoeia-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "ClusterRoleBinding"
@@ -377,7 +377,7 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "chrysopoeia-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "v1"
 kind: "Service"
@@ -387,7 +387,7 @@ metadata:
     app.kubernetes.io/name: "chrysopoeia"
     control-plane: "controller-manager"
   name: "chrysopoeia-controller-manager-metrics-service"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   ports:
   - name: "https"
@@ -405,7 +405,7 @@ metadata:
     app.kubernetes.io/managed-by: "kustomize"
     app.kubernetes.io/name: "chrysopoeia"
   name: "chrysopoeia-webhook-service"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   ports:
   - port: 443
@@ -427,7 +427,7 @@ metadata:
     app.kubernetes.io/part-of: "chrysopoeia"
     control-plane: "controller-manager"
   name: "chrysopoeia-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   replicas: 1
   selector:
@@ -448,9 +448,9 @@ spec:
         - "--leader-elect"
         - "--webhook-cert-path=/tmp/k8s-webhook-server/serving-certs"
         - "--metrics-cert-path=/tmp/k8s-metrics-server/metrics-certs"
-        - "--image-reflector-controller-hostname=image-reflector-controller-tags.helmetica-framework.svc:8090"
-        - "--harness-proxy-host=chrysopoeia-proxy.helmetica-framework.svc"
-        - "--harness-proxy-ca-secret-namespace=helmetica-framework"
+        - "--image-reflector-controller-hostname=image-reflector-controller-tags.syn-helmetica-framework.svc:8090"
+        - "--harness-proxy-host=chrysopoeia-proxy.syn-helmetica-framework.svc"
+        - "--harness-proxy-ca-secret-namespace=syn-helmetica-framework"
         env:
         - name: "POD_NAMESPACE"
           valueFrom:
@@ -522,11 +522,11 @@ metadata:
     app.kubernetes.io/managed-by: "kustomize"
     app.kubernetes.io/name: "chrysopoeia"
   name: "chrysopoeia-metrics-certs"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   dnsNames:
-  - "chrysopoeia-controller-manager-metrics-service.helmetica-framework.svc"
-  - "chrysopoeia-controller-manager-metrics-service.helmetica-framework.svc.cluster.local"
+  - "chrysopoeia-controller-manager-metrics-service.syn-helmetica-framework.svc"
+  - "chrysopoeia-controller-manager-metrics-service.syn-helmetica-framework.svc.cluster.local"
   issuerRef:
     kind: "Issuer"
     name: "chrysopoeia-selfsigned-issuer"
@@ -539,11 +539,11 @@ metadata:
     app.kubernetes.io/managed-by: "kustomize"
     app.kubernetes.io/name: "chrysopoeia"
   name: "chrysopoeia-serving-cert"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   dnsNames:
-  - "chrysopoeia-webhook-service.helmetica-framework.svc"
-  - "chrysopoeia-webhook-service.helmetica-framework.svc.cluster.local"
+  - "chrysopoeia-webhook-service.syn-helmetica-framework.svc"
+  - "chrysopoeia-webhook-service.syn-helmetica-framework.svc.cluster.local"
   issuerRef:
     kind: "Issuer"
     name: "chrysopoeia-selfsigned-issuer"
@@ -556,7 +556,7 @@ metadata:
     app.kubernetes.io/managed-by: "kustomize"
     app.kubernetes.io/name: "chrysopoeia"
   name: "chrysopoeia-selfsigned-issuer"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   selfSigned: {}
 ---
@@ -572,7 +572,7 @@ metadata:
     app.kubernetes.io/part-of: "chrysopoeia"
     control-plane: "controller-manager"
   name: "chrysopoeia-controller-manager-metrics-monitor"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   endpoints:
   - bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token"
@@ -592,7 +592,7 @@ spec:
       keySecret:
         key: "tls.key"
         name: "chrysopoeia-metrics-server-cert"
-      serverName: "chrysopoeia-controller-manager-metrics-service.helmetica-framework.svc"
+      serverName: "chrysopoeia-controller-manager-metrics-service.syn-helmetica-framework.svc"
   selector:
     matchLabels:
       control-plane: "controller-manager"

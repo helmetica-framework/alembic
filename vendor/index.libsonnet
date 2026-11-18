@@ -4,6 +4,9 @@
     crd: importstr 'adept/crd.yaml',
     default: importstr 'adept/default.yaml',
   },
+  'aludel-cloudscale': {
+    manager: importstr 'aludel-cloudscale/manager.yaml',
+  },
   ampulla: {
     crd: importstr 'ampulla/crd.yaml',
     default: importstr 'ampulla/default.yaml',
@@ -14,6 +17,9 @@
     espejote: importstr 'chrysopoeia/espejote.yaml',
     flux: importstr 'chrysopoeia/flux.yaml',
     proxy: importstr 'chrysopoeia/proxy.yaml',
+  },
+  cosi: {
+    crd: importstr 'cosi/crd.yaml',
   },
   custos: {
     crd: importstr 'custos/crd.yaml',

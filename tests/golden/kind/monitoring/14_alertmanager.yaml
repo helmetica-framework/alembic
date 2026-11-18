@@ -3,13 +3,13 @@ apiVersion: "v1"
 kind: "ServiceAccount"
 metadata:
   name: "alertmanager"
-  namespace: "helmetica-framework-monitoring"
+  namespace: "syn-helmetica-framework-monitoring"
 ---
 apiVersion: "v1"
 kind: "Service"
 metadata:
   name: "alertmanager"
-  namespace: "helmetica-framework-monitoring"
+  namespace: "syn-helmetica-framework-monitoring"
 spec:
   ports:
   - name: "web"
@@ -26,9 +26,9 @@ apiVersion: "monitoring.coreos.com/v1"
 kind: "Alertmanager"
 metadata:
   annotations:
-    operator.prometheus.io/controller-id: "helmetica-framework-monitoring/prometheus-operator"
+    operator.prometheus.io/controller-id: "syn-helmetica-framework-monitoring/prometheus-operator"
   name: "alertmanager"
-  namespace: "helmetica-framework-monitoring"
+  namespace: "syn-helmetica-framework-monitoring"
 spec:
   alertmanagerConfigNamespaceSelector:
     matchExpressions:
@@ -59,7 +59,7 @@ apiVersion: "monitoring.coreos.com/v1alpha1"
 kind: "AlertmanagerConfig"
 metadata:
   name: "global-null-route"
-  namespace: "helmetica-framework-monitoring"
+  namespace: "syn-helmetica-framework-monitoring"
 spec:
   receivers:
   - name: "null"

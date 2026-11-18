@@ -3,7 +3,7 @@ apiVersion: "monitoring.coreos.com/v1"
 kind: "ServiceMonitor"
 metadata:
   name: "kubelet"
-  namespace: "helmetica-framework-monitoring"
+  namespace: "syn-helmetica-framework-monitoring"
 spec:
   attachMetadata:
     node: true

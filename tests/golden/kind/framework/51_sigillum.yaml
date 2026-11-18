@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/name: "serviceaccount"
     app.kubernetes.io/part-of: "sigillum"
   name: "sigillum-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "Role"
@@ -23,7 +23,7 @@ metadata:
     app.kubernetes.io/name: "role"
     app.kubernetes.io/part-of: "sigillum"
   name: "sigillum-leader-election-role"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 rules:
 - apiGroups:
   - ""
@@ -208,7 +208,7 @@ metadata:
     app.kubernetes.io/name: "rolebinding"
     app.kubernetes.io/part-of: "sigillum"
   name: "sigillum-leader-election-rolebinding"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 roleRef:
   apiGroup: "rbac.authorization.k8s.io"
   kind: "Role"
@@ -216,7 +216,7 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "sigillum-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "ClusterRoleBinding"
@@ -236,7 +236,7 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "sigillum-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "ClusterRoleBinding"
@@ -249,7 +249,7 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "sigillum-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "v1"
 kind: "Service"
@@ -259,7 +259,7 @@ metadata:
     app.kubernetes.io/name: "sigillum"
     control-plane: "controller-manager"
   name: "sigillum-controller-manager-metrics-service"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   ports:
   - name: "https"
@@ -282,7 +282,7 @@ metadata:
     app.kubernetes.io/part-of: "sigillum"
     control-plane: "controller-manager"
   name: "sigillum-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   replicas: 1
   selector:

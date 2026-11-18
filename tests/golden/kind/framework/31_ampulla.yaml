@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/name: "serviceaccount"
     app.kubernetes.io/part-of: "ampulla"
   name: "ampulla-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "Role"
@@ -23,7 +23,7 @@ metadata:
     app.kubernetes.io/name: "role"
     app.kubernetes.io/part-of: "ampulla"
   name: "ampulla-leader-election-role"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 rules:
 - apiGroups:
   - ""
@@ -199,7 +199,7 @@ metadata:
     app.kubernetes.io/name: "rolebinding"
     app.kubernetes.io/part-of: "ampulla"
   name: "ampulla-leader-election-rolebinding"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 roleRef:
   apiGroup: "rbac.authorization.k8s.io"
   kind: "Role"
@@ -207,7 +207,7 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "ampulla-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "ClusterRoleBinding"
@@ -227,7 +227,7 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "ampulla-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "ClusterRoleBinding"
@@ -240,7 +240,7 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "ampulla-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "v1"
 kind: "Service"
@@ -250,7 +250,7 @@ metadata:
     app.kubernetes.io/name: "ampulla"
     control-plane: "controller-manager"
   name: "ampulla-controller-manager-metrics-service"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   ports:
   - name: "https"
@@ -273,7 +273,7 @@ metadata:
     app.kubernetes.io/part-of: "ampulla"
     control-plane: "controller-manager"
   name: "ampulla-controller-manager"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   replicas: 1
   selector:
@@ -350,11 +350,11 @@ metadata:
     app.kubernetes.io/managed-by: "kustomize"
     app.kubernetes.io/name: "ampulla"
   name: "ampulla-metrics-certs"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   dnsNames:
-  - "ampulla-controller-manager-metrics-service.helmetica-framework.svc"
-  - "ampulla-controller-manager-metrics-service.helmetica-framework.svc.cluster.local"
+  - "ampulla-controller-manager-metrics-service.syn-helmetica-framework.svc"
+  - "ampulla-controller-manager-metrics-service.syn-helmetica-framework.svc.cluster.local"
   issuerRef:
     kind: "Issuer"
     name: "ampulla-selfsigned-issuer"
@@ -367,7 +367,7 @@ metadata:
     app.kubernetes.io/managed-by: "kustomize"
     app.kubernetes.io/name: "ampulla"
   name: "ampulla-selfsigned-issuer"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   selfSigned: {}
 ---
@@ -383,7 +383,7 @@ metadata:
     app.kubernetes.io/part-of: "ampulla"
     control-plane: "controller-manager"
   name: "ampulla-controller-manager-metrics-monitor"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   endpoints:
   - bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token"
@@ -403,7 +403,7 @@ spec:
       keySecret:
         key: "tls.key"
         name: "ampulla-metrics-server-cert"
-      serverName: "ampulla-controller-manager-metrics-service.helmetica-framework.svc"
+      serverName: "ampulla-controller-manager-metrics-service.syn-helmetica-framework.svc"
   selector:
     matchLabels:
       control-plane: "controller-manager"

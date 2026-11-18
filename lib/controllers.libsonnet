@@ -25,6 +25,21 @@ local special = {
 
   libra(s, d):
     common.patchContainer('manager', d, function(c) common.s3Env(c, s)),
+
+  ampulla(s, d):
+    common.patchContainer(
+      'manager', d, function(c)
+        local flags = [
+          { name: 'default-bucket-class', value: std.get(s.ampulla, 'default_bucket_class', null) },
+          { name: 'default-bucket-access-class', value: std.get(s.ampulla, 'default_bucket_access_class', null) },
+        ];
+        local args = [
+          '--%s=%s' % [ flag.name, flag.value ]
+          for flag in flags
+          if flag.value != null
+        ];
+        if std.length(args) == 0 then c else common.addArgs(c, args)
+    ),
 };
 
 local render(s, name) =

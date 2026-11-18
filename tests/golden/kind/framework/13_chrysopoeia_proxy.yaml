@@ -3,7 +3,7 @@ apiVersion: "v1"
 kind: "ServiceAccount"
 metadata:
   name: "chrysopoeia-proxy"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "rbac.authorization.k8s.io/v1"
 kind: "ClusterRole"
@@ -50,13 +50,13 @@ roleRef:
 subjects:
 - kind: "ServiceAccount"
   name: "chrysopoeia-proxy"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 ---
 apiVersion: "v1"
 kind: "Service"
 metadata:
   name: "chrysopoeia-proxy"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   ports:
   - port: 8443
@@ -71,7 +71,7 @@ metadata:
   labels:
     chrysopoeia-component: "proxy"
   name: "chrysopoeia-proxy"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   replicas: 1
   selector:
@@ -157,7 +157,7 @@ metadata:
       
       This allows the chrysopoeia proxy to filter access for operators that require cluster scoped access.
   name: "chrysopoeia-instances-namespaced-requires-labels"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   failurePolicy: "Fail"
   matchConstraints:
@@ -202,7 +202,7 @@ apiVersion: "admissionregistration.k8s.io/v1"
 kind: "MutatingAdmissionPolicyBinding"
 metadata:
   name: "chrysopoeia-instances-namespaced-requires-labels"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   policyName: "chrysopoeia-instances-namespaced-requires-labels"
 ---
@@ -213,11 +213,11 @@ metadata:
     app.kubernetes.io/managed-by: "kustomize"
     app.kubernetes.io/name: "chrysopoeia"
   name: "chrysopoeia-proxy-serving-cert"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   dnsNames:
-  - "chrysopoeia-proxy.helmetica-framework.svc"
-  - "chrysopoeia-proxy.helmetica-framework.svc.cluster.local"
+  - "chrysopoeia-proxy.syn-helmetica-framework.svc"
+  - "chrysopoeia-proxy.syn-helmetica-framework.svc.cluster.local"
   issuerRef:
     kind: "Issuer"
     name: "chrysopoeia-selfsigned-issuer"
@@ -227,7 +227,7 @@ apiVersion: "networking.k8s.io/v1"
 kind: "NetworkPolicy"
 metadata:
   name: "chrysopoeia-proxy"
-  namespace: "helmetica-framework"
+  namespace: "syn-helmetica-framework"
 spec:
   ingress:
   - from:

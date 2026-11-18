@@ -128,6 +128,19 @@ controllers:
     repo: prometheus-operator/prometheus-operator
     rawdirs:
       crds: example/prometheus-operator-crd
+  # Upstream COSI install: the CRDs and the object storage controller.
+  cosi:
+    version: v0.0.1-dev2
+    repo: helmetica-framework/aludel-cloudscale
+    dirs:
+      crd: config/crd
+  # The cloudscale.ch COSI driver. Separate from COSI, because the driver is
+  # optional and COSI is usable without it.
+  aludel-cloudscale:
+    version: v0.0.1-dev2
+    repo: helmetica-framework/aludel-cloudscale
+    dirs:
+      manager: config/manager
 
 chrysopoeia:
   enabled: true
@@ -146,6 +159,13 @@ ampulla:
   enabled: true
   crds:
     enabled: true
+  # Appended to the controller args when set. An empty value omits the flag.
+  default_bucket_class: null
+  default_bucket_access_class: null
+cosi:
+  enabled: true
+aludel_cloudscale:
+  enabled: false
 adept:
   enabled: true
   crds:
