@@ -1,0 +1,48 @@
+name: renovate-regen
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: renovate-regen-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  regen:
+    # Renovate pushes branches in this repo. Fork PRs get no write token.
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      startsWith(github.head_ref, 'renovate/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version: stable
+          cache: false
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b # v3
+        with:
+          # renovate: datasource=github-releases depName=casey/just
+          just-version: '1.59.0'
+      - run: just gen-golden
+      - name: Commit and push
+        run: |
+          set -euo pipefail
+          if [ -z "$TOKEN" ]; then
+            echo "REGEN_TOKEN is not set" >&2
+            exit 1
+          fi
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "generated files are up to date"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'chore: regenerate vendor and golden files'
+          git push

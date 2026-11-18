@@ -1,0 +1,9 @@
+---
+apiVersion: "v1"
+kind: "Namespace"
+metadata:
+  labels:
+    team: "x"
+  name: "hf"
+...
+
