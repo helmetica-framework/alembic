@@ -24,6 +24,8 @@ alembic.framework({ namespace: 'my-namespace' })
 Add the repo as a jsonnet dependency and import `alembic/lib/alembic.libsonnet`.
 `settings` is merged onto the library defaults. Unknown keys are ignored.
 
+See `docs/config-reference.md` for all settings.
+
 ## Bump a version
 
 Edit `defaults.yaml` (or merge the Renovate PR), then re-render:

@@ -2,6 +2,7 @@
   namespace: 'syn-helmetica-framework',
   createNamespace: false,
   chrysopoeia: { admission: 'espejote' },
+  aludel_cloudscale: { enabled: true },
   monitoring_stack: {
     enabled: true,
     platform: 'openshift4',
