@@ -33,10 +33,6 @@ jobs:
       - name: Commit and push
         run: |
           set -euo pipefail
-          if [ -z "$TOKEN" ]; then
-            echo "REGEN_TOKEN is not set" >&2
-            exit 1
-          fi
           if [ -z "$(git status --porcelain)" ]; then
             echo "generated files are up to date"
             exit 0
