@@ -73,7 +73,7 @@ images:
 controllers:
   chrysopoeia:
     # renovate: datasource=github-tags depName=helmetica-framework/chrysopoeia
-    version: v0.1.7
+    version: v0.2.0
     # No order: rendered by the chrysopoeia module.
     dirs:
       crd: config/crd
