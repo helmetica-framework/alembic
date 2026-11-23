@@ -6,17 +6,14 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: renovate-regen-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   regen:
     # Renovate pushes branches in this repo. Fork PRs get no write token.
-    if: >-
-      github.event.pull_request.head.repo.full_name == github.repository &&
-      startsWith(github.head_ref, 'renovate/')
+    if: startsWith(github.head_ref, 'renovate/')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -30,7 +27,8 @@ jobs:
           # renovate: datasource=github-releases depName=casey/just
           just-version: '1.59.0'
       - run: just gen-golden
-      - name: Commit and push
+      - id: commit
+        name: Commit and push
         run: |
           set -euo pipefail
           if [ -z "$(git status --porcelain)" ]; then
@@ -42,3 +40,9 @@ jobs:
           git add -A
           git commit -m 'chore: regenerate vendor and golden files'
           git push
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+      # A push with GITHUB_TOKEN does not trigger workflows
+      - if: steps.commit.outputs.pushed == 'true'
+        run: gh workflow run test.yaml --ref "${{ github.head_ref }}"
+        env:
+          GH_TOKEN: ${{ github.token }}
