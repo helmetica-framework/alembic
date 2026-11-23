@@ -42,7 +42,7 @@ images:
     registry: ghcr.io
     repository: fluxcd/image-reflector-controller
     # renovate: datasource=docker depName=ghcr.io/fluxcd/image-reflector-controller
-    tag: v1.3.0
+    tag: v1.3.1
   flux-helm-controller:
     registry: ghcr.io
     repository: fluxcd/helm-controller
