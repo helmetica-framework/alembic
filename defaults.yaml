@@ -52,7 +52,7 @@ images:
     registry: quay.io
     repository: prometheus/alertmanager
     # renovate: datasource=docker depName=quay.io/prometheus/alertmanager
-    tag: v0.35.0
+    tag: v0.35.1
   prometheus:
     registry: quay.io
     repository: prometheus/prometheus
