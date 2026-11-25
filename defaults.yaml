@@ -47,7 +47,7 @@ images:
     registry: ghcr.io
     repository: fluxcd/helm-controller
     # renovate: datasource=docker depName=ghcr.io/fluxcd/helm-controller
-    tag: v1.7.1
+    tag: v1.7.2
   alertmanager:
     registry: quay.io
     repository: prometheus/alertmanager
