@@ -1,0 +1,10 @@
+= Develop
+
+[source,bash]
+----
+just vendor        # fetch the upstream kustomize dirs at the pinned tags
+just gen-golden    # re-render manifests/ and the golden tests
+just golden-diff   # show what a change does to the rendered output
+just lint
+just docs          # build these docs, fails on warnings
+----
