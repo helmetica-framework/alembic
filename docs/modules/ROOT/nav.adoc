@@ -1,0 +1,12 @@
+* xref:index.adoc[Overview]
+
+.Explanations
+* xref:explanations/architecture.adoc[Layout]
+
+.How-tos
+* xref:how-tos/install.adoc[Use from jsonnet]
+* xref:how-tos/bump-version.adoc[Bump a version]
+* xref:how-tos/develop.adoc[Develop]
+
+.References
+* xref:references/configuration.adoc[Configuration reference]

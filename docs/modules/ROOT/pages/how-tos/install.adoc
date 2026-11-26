@@ -1,0 +1,13 @@
+= Use from jsonnet
+
+[source,jsonnet]
+----
+local alembic = import 'alembic/lib/alembic.libsonnet';
+
+alembic.framework({ namespace: 'my-namespace' })
+----
+
+Add the repo as a jsonnet dependency and import `alembic/lib/alembic.libsonnet`.
+`settings` is merged onto the library defaults. Unknown keys are ignored.
+
+See xref:references/configuration.adoc[Configuration reference] for all settings.

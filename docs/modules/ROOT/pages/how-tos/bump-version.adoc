@@ -1,0 +1,8 @@
+= Bump a version
+
+Edit `defaults.yaml` (or merge the Renovate PR), then re-render:
+
+[source,bash]
+----
+just gen-golden
+----
