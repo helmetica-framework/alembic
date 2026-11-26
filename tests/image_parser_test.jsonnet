@@ -31,4 +31,15 @@ assert parse('registry.example/team/app:stable@sha256:abcdef') == {
   digest: 'sha256:abcdef',
 };
 
+assert parse('alpine').format() == 'docker.io/library/alpine';
+assert parse('team/app:1.2').format() == 'docker.io/team/app:1.2';
+assert parse('registry.example/team/app@sha256:abcdef').format() == 'registry.example/team/app@sha256:abcdef';
+assert parse('registry.example/team/app:stable@sha256:abcdef').format() == 'registry.example/team/app:stable@sha256:abcdef';
+
+assert (
+  parse('registry.example/team/app:stable@sha256:abcdef')
+  +
+  std.prune(parse('overlay.example/team/app'))
+).format() == 'overlay.example/team/app:stable@sha256:abcdef';
+
 true

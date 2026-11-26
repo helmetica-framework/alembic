@@ -45,6 +45,11 @@ local parseDockerImage(image) =
     repository: std.join('/', repositoryParts),
     tag: tag,
     digest: digest,
+
+    format()::
+      local base = std.join('/', [ self.registry, self.repository ]);
+      local withTag = if self.tag != null then std.join(':', [ base, self.tag ]) else base;
+      if self.digest != null then std.join('@', [ withTag, self.digest ]) else withTag,
   };
 
 {
