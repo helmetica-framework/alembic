@@ -92,7 +92,7 @@ controllers:
       default: config/default
   ampulla:
     # renovate: datasource=github-tags depName=helmetica-framework/ampulla
-    version: v0.1.3
+    version: v0.1.4
     order: 30
     namespace: ampulla-system
     dirs:
