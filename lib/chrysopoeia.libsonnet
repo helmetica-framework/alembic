@@ -25,7 +25,7 @@ local fluxImages = {
             if std.objectHas(fluxImages, d.metadata.name) then
               common.patchContainer(
                 'manager', d, function(c)
-                  c { image: common.imageFor(s, fluxImages[d.metadata.name]) }
+                  c { image: (common.parseDockerImage(super.image) + common.parseDockerImage(common.imageFor(s, fluxImages[d.metadata.name]))).format() }
               )
             else d
         )

@@ -11,7 +11,7 @@ local s3EnvEntry(name, key, secret) = {
 local imageTag(s, name) =
   if std.objectHas(s.images, name) && std.objectHas(s.images[name], 'tag') then s.images[name].tag
   else if std.objectHas(versions.controllers, name) then versions.controllers[name].version
-  else versions.images[name].tag;
+  else std.get(versions.images[name], 'tag');
 
 local parseDockerImage(image) =
   assert std.type(image) == 'string' && std.length(image) > 0 : 'image must be a non-empty string';
@@ -43,13 +43,13 @@ local parseDockerImage(image) =
   {
     registry: registry,
     repository: std.join('/', repositoryParts),
-    tag: tag,
-    digest: digest,
+    [if tag != null then 'tag']: tag,
+    [if digest != null then 'digest']: digest,
 
     format()::
       local base = std.join('/', [ self.registry, self.repository ]);
-      local withTag = if self.tag != null then std.join(':', [ base, self.tag ]) else base;
-      if self.digest != null then std.join('@', [ withTag, self.digest ]) else withTag,
+      local withTag = if std.get(self, 'tag') != null then std.join(':', [ base, self.tag ]) else base;
+      if std.get(self, 'digest') != null then std.join('@', [ withTag, self.digest ]) else withTag,
   };
 
 {
@@ -61,7 +61,11 @@ local parseDockerImage(image) =
       if std.objectHas(versions.images, name) then versions.images[name]
       else { registry: 'ghcr.io', repository: 'helmetica-framework/' + name };
     local i = fallback + std.get(s.images, name, {});
-    '%(registry)s/%(repository)s:%(tag)s' % (i { tag: imageTag(s, name) }),
+    local tag = imageTag(s, name);
+    if tag != null then
+      '%(registry)s/%(repository)s:%(tag)s' % (i { tag: tag })
+    else
+      '%(registry)s/%(repository)s' % i,
 
   addArgs(c, args)::
     c { args: std.get(c, 'args', []) + args },
