@@ -297,7 +297,7 @@ spec:
         - "controller"
         - "--metrics-bind-address=:8443"
         - "--leader-elect"
-        - "--gather-image=ghcr.io/helmetica-framework/custos:v0.1.2"
+        - "--gather-image=ghcr.io/helmetica-framework/custos:v0.1.3"
         env:
         - name: "POD_NAMESPACE"
           valueFrom:
@@ -307,7 +307,7 @@ spec:
           valueFrom:
             resourceFieldRef:
               resource: "limits.memory"
-        image: "ghcr.io/helmetica-framework/custos:v0.1.2"
+        image: "ghcr.io/helmetica-framework/custos:v0.1.3"
         livenessProbe:
           httpGet:
             path: "/healthz"
