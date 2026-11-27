@@ -84,7 +84,7 @@ controllers:
       espejote: config/proxy/permission-label-map-espejote.yaml
   custos:
     # renovate: datasource=github-tags depName=helmetica-framework/custos
-    version: v0.1.2
+    version: v0.1.3
     order: 20
     namespace: custos-system
     dirs:
