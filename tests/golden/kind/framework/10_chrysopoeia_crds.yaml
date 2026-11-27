@@ -529,7 +529,7 @@ spec:
                 - "kind"
                 - "name"
                 type: "object"
-              managerRules:
+              localRules:
                 description: "LocalRules grants the service accounts in the 'manages' namespace namespace local permissions"
                 items:
                   description: "PolicyRule holds information that describes a policy rule, but does not contain information\nabout who the rule applies to or which namespace the rule applies to."
