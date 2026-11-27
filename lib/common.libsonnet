@@ -11,17 +11,61 @@ local s3EnvEntry(name, key, secret) = {
 local imageTag(s, name) =
   if std.objectHas(s.images, name) && std.objectHas(s.images[name], 'tag') then s.images[name].tag
   else if std.objectHas(versions.controllers, name) then versions.controllers[name].version
-  else versions.images[name].tag;
+  else std.get(versions.images[name], 'tag');
+
+local parseDockerImage(image) =
+  assert std.type(image) == 'string' && std.length(image) > 0 : 'image must be a non-empty string';
+  local referenceParts = std.split(image, '@');
+  assert std.length(referenceParts) <= 2 : 'image must contain at most one digest separator: ' + image;
+  local name = referenceParts[0];
+  local digest = if std.length(referenceParts) == 2 then referenceParts[1] else null;
+  assert digest != '' : 'image digest must not be empty: ' + image;
+  local path = std.split(name, '/');
+  assert std.length([ part for part in path if part == '' ]) == 0 : 'image path must not contain empty components: ' + image;
+  local last = path[std.length(path) - 1];
+  local lastParts = std.split(last, ':');
+  assert std.length(lastParts) <= 2 : 'image tag must contain at most one separator: ' + image;
+  local tag = if std.length(lastParts) == 2 then lastParts[1] else null;
+  assert tag != '' : 'image tag must not be empty: ' + image;
+  local nameParts = path[0:std.length(path) - 1] + [ lastParts[0] ];
+  local first = nameParts[0];
+  local hasRegistry =
+    std.length(nameParts) > 1
+    && (std.length(std.findSubstr('.', first)) > 0
+        || std.length(std.findSubstr(':', first)) > 0
+        || first == 'localhost');
+  local registry = if hasRegistry then first else 'docker.io';
+  local repositoryParts =
+    if hasRegistry then nameParts[1:]
+    else if std.length(nameParts) == 1 then [ 'library' ] + nameParts
+    else nameParts;
+  assert std.length(repositoryParts) > 0 : 'image repository must not be empty: ' + image;
+  {
+    registry: registry,
+    repository: std.join('/', repositoryParts),
+    [if tag != null then 'tag']: tag,
+    [if digest != null then 'digest']: digest,
+
+    format()::
+      local base = std.join('/', [ self.registry, self.repository ]);
+      local withTag = if std.get(self, 'tag') != null then std.join(':', [ base, self.tag ]) else base;
+      if std.get(self, 'digest') != null then std.join('@', [ withTag, self.digest ]) else withTag,
+  };
 
 {
   imageTag:: imageTag,
+  parseDockerImage:: parseDockerImage,
 
   imageFor(s, name)::
     local fallback =
       if std.objectHas(versions.images, name) then versions.images[name]
       else { registry: 'ghcr.io', repository: 'helmetica-framework/' + name };
     local i = fallback + std.get(s.images, name, {});
-    '%(registry)s/%(repository)s:%(tag)s' % (i { tag: imageTag(s, name) }),
+    local tag = imageTag(s, name);
+    if tag != null then
+      '%(registry)s/%(repository)s:%(tag)s' % (i { tag: tag })
+    else
+      '%(registry)s/%(repository)s' % i,
 
   addArgs(c, args)::
     c { args: std.get(c, 'args', []) + args },

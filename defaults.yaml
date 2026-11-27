@@ -36,18 +36,15 @@ images:
   flux-source-controller:
     registry: ghcr.io
     repository: fluxcd/source-controller
-    # renovate: datasource=docker depName=ghcr.io/fluxcd/source-controller
-    tag: v1.10.2
+    tag: null
   flux-image-reflector-controller:
     registry: ghcr.io
     repository: fluxcd/image-reflector-controller
-    # renovate: datasource=docker depName=ghcr.io/fluxcd/image-reflector-controller
-    tag: v1.3.1
+    tag: null
   flux-helm-controller:
     registry: ghcr.io
     repository: fluxcd/helm-controller
-    # renovate: datasource=docker depName=ghcr.io/fluxcd/helm-controller
-    tag: v1.7.2
+    tag: null
   alertmanager:
     registry: quay.io
     repository: prometheus/alertmanager
@@ -73,7 +70,7 @@ images:
 controllers:
   chrysopoeia:
     # renovate: datasource=github-tags depName=helmetica-framework/chrysopoeia
-    version: v0.2.0
+    version: v0.3.0
     # No order: rendered by the chrysopoeia module.
     dirs:
       crd: config/crd
