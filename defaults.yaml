@@ -116,7 +116,7 @@ controllers:
       default: config/default
   libra:
     # renovate: datasource=github-tags depName=helmetica-framework/libra
-    version: v0.0.1
+    version: v0.0.2
     order: 60
     namespace: libra-system
     dirs:
